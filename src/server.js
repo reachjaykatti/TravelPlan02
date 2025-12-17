@@ -7,13 +7,13 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import { initDb } from './src/config/db.js';
-import { sessionConfig } from './src/config/session.js';
-import authRoutes from './src/routes/auth.js';
-import adminRoutes from './src/routes/admin.js';
-import seriesRoutes from './src/routes/series.js';
-import dashboardRoutes from './src/routes/dashboard.js';
-import { ensureAuthenticated } from './src/middleware/auth.js';
+import { initDb } from './config/db.js';
+import { sessionConfig } from './config/session.js';
+import authRoutes from './routes/auth.js';
+import adminRoutes from './routes/admin.js';
+import seriesRoutes from './routes/series.js';
+import dashboardRoutes from './routes/dashboard.js';
+import { ensureAuthenticated } from './middleware/auth.js';
 
 // find your current directory
 const __filename = fileURLToPath(import.meta.url);
