@@ -111,7 +111,17 @@ function wrapDb(db) {
 
 export async function getDb() {
   if (!dbInstance) {
-    const native = new sqlite3.Database(dbPath);
+    const native = new sqlite3.Database(
+  dbPath,
+  sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE,
+  (err) => {
+    if (err) {
+      console.error('[DB] open failed:', err);
+    } else {
+      console.log('[DB] open succeeded at', dbPath);
+    }
+  }
+);
     // Enforce foreign keys on this connection too
     native.exec('PRAGMA foreign_keys = ON;');
     dbInstance = wrapDb(native);
