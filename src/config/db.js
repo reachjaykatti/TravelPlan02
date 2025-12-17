@@ -61,6 +61,12 @@ const dbPath = '/tmp/db.sqlite';
 console.log('[DB] using file:', dbPath);
 console.log('[DB] cwd:', process.cwd());
 console.log('[DB] using file:', dbPath);
+import os from 'os';
+const tmpDir = os.tmpdir();            // Always a writable dir on Render
+const dbPath = path.join(tmpDir, 'db.sqlite');
+console.log('[DB] final path:', dbPath);
+fs.mkdirSync(path.dirname(dbPath), { recursive: true });
+const native = new sqlite3.Database(dbPath);
 
 // Ensure the folder exists
 fs.mkdirSync(path.dirname(dbPath), { recursive: true });
