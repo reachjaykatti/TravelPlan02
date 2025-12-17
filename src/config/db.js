@@ -53,22 +53,21 @@ sqlite3.verbose();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Default: write DB in /tmp on Render, or in local /data when developing
-const isRender = process.env.RENDER === 'true';
+// ------------------------------------------------------
+// Choose a safe location for the database
+// ------------------------------------------------------
+import os from 'os';
+
+// Render makes /tmp writable; local dev can use ./data
+const tmpDir = os.tmpdir(); // usually '/tmp'
 const localDefault = path.resolve(__dirname, '../../data/db.sqlite');
-const renderDefault = path.resolve('/tmp', 'db.sqlite');
-const dbPath = '/tmp/db.sqlite';
-console.log('[DB] using file:', dbPath);
+const dbPath =
+  process.env.SQLITE_DB_PATH || (process.env.RENDER ? path.join(tmpDir, 'db.sqlite') : localDefault);
+
 console.log('[DB] cwd:', process.cwd());
 console.log('[DB] using file:', dbPath);
-import os from 'os';
-const tmpDir = os.tmpdir();            // Always a writable dir on Render
-const dbPath = path.join(tmpDir, 'db.sqlite');
-console.log('[DB] final path:', dbPath);
-fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-const native = new sqlite3.Database(dbPath);
 
-// Ensure the folder exists
+// make sure the folder exists
 fs.mkdirSync(path.dirname(dbPath), { recursive: true });
 
 let dbInstance = null;
