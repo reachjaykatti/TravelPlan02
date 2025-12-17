@@ -53,8 +53,12 @@ sqlite3.verbose();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Default DB file at project-root/data/db.sqlite (override with SQLITE_DB_PATH)
-const defaultDbPath = path.resolve(__dirname, '../../data/db.sqlite');
+// Default: write DB in /tmp on Render, or in local /data when developing
+const isRender = process.env.RENDER === 'true';
+const localDefault = path.resolve(__dirname, '../../data/db.sqlite');
+const renderDefault = path.resolve('/tmp', 'db.sqlite');
+const defaultDbPath = isRender ? renderDefault : localDefault;
+
 const dbPath = process.env.SQLITE_DB_PATH
   ? path.resolve(process.env.SQLITE_DB_PATH)
   : defaultDbPath;
