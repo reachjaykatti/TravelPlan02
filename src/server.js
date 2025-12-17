@@ -20,7 +20,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Read labels.json manually
-const labelsPath = path.join(__dirname, 'src/config/labels.json');
+const labelsPath = path.join(__dirname, 'config/labels.json');
 const labels = JSON.parse(fs.readFileSync(labelsPath, 'utf8'));
 
 dotenv.config();
