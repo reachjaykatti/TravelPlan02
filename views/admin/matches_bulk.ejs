@@ -1,0 +1,58 @@
+<%- include('../partials/head', { title: labels.matches }) %>
+
+<h1>Bulk Import <%= labels.matches %> — <%= series.name %></h1>
+
+<div class="card">
+  <p>
+    You can either <strong>upload a CSV/TSV file</strong> or <strong>paste</strong> the travel details below.  
+    Time must be provided in <strong>IST</strong> (we’ll convert to UTC internally).
+  </p>
+
+  <p style="margin:.5rem 0">
+    <a href="/admin/series/<%= series.id %>/matches/bulk/template" class="btn btn-link">Download Template (CSV)</a>
+  </p>
+
+  <form method="POST" action="/admin/series/<%= series.id %>/matches/bulk" enctype="multipart/form-data">
+    <div style="margin: .5rem 0;">
+      <label for="file"><strong>Upload Travel CSV/TSV file (optional):</strong></label><br/>
+      <input type="file" id="file" name="file" accept=".csv,.tsv,text/csv,text/tab-separated-values" />
+      <div class="text-muted" style="font-size:.9em;margin-top:.25rem;">
+        If you choose a file, it will be used instead of the pasted text.
+      </div>
+    </div>
+
+    <div style="margin: .5rem 0;">
+      <label for="text"><strong>Or paste CSV/TSV here:</strong></label><br/>
+      <textarea id="text" name="text" rows="10" style="width:100%; font-family: monospace;"
+        placeholder="name,sport,location_a,location_b,start_time_ist,cutoff_minutes_before,entry_points&#10;Travel 01,flight,DEL,MUM,2025-12-31 20:00,30,50"></textarea>
+    </div>
+
+    <div style="margin: .5rem 0;">
+      <button class="btn btn-primary" type="submit">Import Travels</button>
+      <a class="btn btn-link" href="/admin/series/<%= series.id %>/matches">Back to Travels</a>
+    </div>
+  </form>
+</div>
+
+<% if (result) { %>
+  <div class="card" style="margin-top:1rem">
+    <h3>Import Result</h3>
+    <div class="chips" style="margin-bottom:.5rem">
+      <div class="chip"><span class="dot dot-ok"></span> Inserted: <strong><%= result.ok %></strong></div>
+      <div class="chip"><span class="dot dot-bad"></span> Skipped: <strong><%= result.skipped %></strong></div>
+    </div>
+
+    <% if (result.errors && result.errors.length) { %>
+      <div class="alert alert-warning">
+        <strong>Issues:</strong>
+        <ul>
+          <% result.errors.forEach(e => { %>
+            <li><%= e %></li>
+          <% }) %>
+        </ul>
+      </div>
+    <% } %>
+  </div>
+<% } %>
+
+<%- include('../partials/foot') %>

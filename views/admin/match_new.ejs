@@ -1,0 +1,60 @@
+<%- include('../partials/head', { title: labels.appTitle }) %>
+
+<h1>New <%= labels.match %> in <%= series.name %></h1>
+
+<div class="card">
+  <form method="post"
+        action="/admin/series/<%= series.id %>/matches/new"
+        class="form"
+        data-ist-form="1">
+
+    <label>Travel Name
+      <input name="name" required />
+    </label>
+
+    <label>Type
+      <input name="sport" required placeholder="flight|roadtrip|train" />
+    </label>
+
+    <label>Destination A
+      <input name="team_a" required />
+    </label>
+
+    <label>Destination B
+      <input name="team_b" required />
+    </label>
+
+    <label>Start Time (IST)
+      <input type="datetime-local"
+             name="start_time_ist"
+             required
+             class="form-control"
+             style="width: 100%; padding: 0.5rem;"
+             title="Select date and time in IST" />
+    </label>
+    
+    <label>Start Time (UTC, ISO)
+      <input type="text"
+             name="start_time_utc"
+             readonly
+             class="form-control"
+             style="width: 100%; padding: 0.5rem;"
+             placeholder="Automatically calculated from IST" />
+    </label>
+   
+    <label>Cutoff Minutes Before
+      <input name="cutoff_minutes_before" type="number" value="30" />
+    </label>
+
+    <label>Entry Points
+      <input name="entry_points" type="number" value="50" />
+    </label>
+
+    <div class="toolbar">
+      <button class="btn btn-primary" type="submit">Create Travel</button>
+      <span style="color:var(--muted)">If IST is filled and UTC is empty, UTC will be auto-computed on submit.</span>
+    </div>
+  </form>
+</div>
+
+<%- include('../partials/foot') %>

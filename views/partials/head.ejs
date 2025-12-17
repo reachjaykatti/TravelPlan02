@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= title %> · Travel Plan</title>
+  <link rel="stylesheet" href="/public/css/styles.css" />
+  <script>
+    // Back fallback route when no previous page exists
+    window.fdHomeUrl = '<%= currentUser ? "/dashboard" : "/login" %>';
+  </script>
+</head>
+<body data-theme="<%= (typeof theme !== 'undefined' ? theme : '') %>">
+  <nav class="nav">
+    <div class="nav-left">
+      <a href="#" class="back-link js-back" data-prev="<%= prevUrl || '' %>">← Back</a>
+      <span class="brand">✈️ Travel Plan</span>
+    </div>
+    <div class="nav-right">
+      <% if (currentUser) { %>
+        <a href="/dashboard" class="nav-link">Dashboard</a>
+        <a href="/series" class="nav-link">My Series</a>
+        <% if (currentUser.is_admin) { %>
+          <a href="/admin" class="nav-link">Admin</a>
+        <% } %>
+        <form method="post" action="/logout" style="display:inline">
+          <button type="submit" class="btn btn-ghost">Logout (<%= currentUser.display_name %>)</button>
+        </form>
+      <% } else { %>
+        <a href="/login" class="nav-link">Login</a>
+      <% } %>
+
+      <!-- Theme toggle -->
+      <button class="btn btn-outline js-theme-toggle" title="Toggle theme">🌓 Theme</button>
+    </div>
+  </nav>
+
+  <main class="container">

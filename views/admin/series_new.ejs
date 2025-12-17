@@ -1,0 +1,15 @@
+
+<%- include('../partials/head', {title}) %>
+<h1>New Series</h1>
+<% if (typeof error !== 'undefined') { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+<button type="button" class="btn btn-link" onclick="history.back()">← Back</button>
+<form method="post" action="/admin/series/new" class="form">
+  <label>Name <input name="name" required /></label>
+  <label>Description <textarea name="description"></textarea></label>
+  <label>Start Date (UTC, e.g., 2025-12-08T10:00:00Z) <input name="start_date_utc" required /></label>
+  <label>End Date (UTC) <input name="end_date_utc" /></label>
+  <button class="btn">Create</button>
+</form>
+<%- include('../partials/foot') %>

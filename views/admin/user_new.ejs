@@ -1,0 +1,15 @@
+
+<%- include('../partials/head', {title}) %>
+<h1>Add User</h1>
+<% if (typeof error !== 'undefined') { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+<button type="button" class="btn btn-link" onclick="history.back()">← Back</button>
+<form method="post" action="/admin/users/new" class="form">
+  <label>Display Name <input name="display_name" required /></label>
+  <label>Username <input name="username" required /></label>
+  <label>Password <input name="password" type="password" required /></label>
+  <label>Admin? <input type="checkbox" name="is_admin" value="1" /></label>
+  <button class="btn">Create</button>
+</form>
+<%- include('../partials/foot') %>

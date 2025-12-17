@@ -1,0 +1,269 @@
+
+/* ========= GLOBAL TYPOGRAPHY ========= */
+html {
+  font-size: 16px;
+  font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+}
+
+body {
+  color: var(--fg);
+  background: var(--bg);
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+  word-break: break-word;
+}
+
+/* ====== Font size scale ====== */
+body {
+  font-size: 1.05rem;  /* slightly larger than default */
+}
+
+table, td, th {
+  font-size: 1rem;
+}
+
+h1 {
+  font-size: 1.8rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+}
+
+@media (max-width: 768px) {
+  body {
+    font-size: 1rem;
+  }
+  h1 {
+    font-size: 1.4rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
+}
+
+/* headings feel more open and travel-like */
+h1, h2, h3 {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: var(--accent);
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* consistent spacing */
+p, table, ul, ol {
+  margin-bottom: 1rem;
+}
+
+/* ========= RESPONSIVE LAYOUT ========= */
+@media (max-width: 768px) {
+  .grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .card {
+    margin-bottom: 1rem;
+  }
+
+  h1 {
+    font-size: 1.4rem;
+  }
+  h2 {
+    font-size: 1.2rem;
+  }
+}
+
+button, .btn {
+  font-size: 0.95rem;
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: var(--accent);
+  color: white;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+button:hover, .btn:hover {
+  background: var(--accent-2);
+  transform: translateY(-1px);
+}
+button:active, .btn:active {
+  transform: translateY(0);
+}
+
+
+/* ====== Dark Theme (Travel Plan) ====== */
+:root {
+  --bg:#0f2f2f; --panel:#103a3a; --border:#155050;
+  --fg:#eaf8f8; --muted:#9fd0d0;
+  --accent:#00b3b3; --accent-2:#4cd6d6;
+  --ok:#24d06d; --warn:#f5b635; --bad:#ff5566;
+}
+
+/* ====== Light Theme (Travel Plan) ====== */
+body[data-theme="light"] {
+  --bg:#f5fcfc; --panel:#ffffff; --border:#cfe4e4;
+  --fg:#083030; --muted:#3b6060;
+  --accent:#008c8c; --accent-2:#4cd6d6;
+  --ok:#16a34a; --warn:#b45309; --bad:#dc2626;
+  color:var(--fg); background:var(--bg);
+}
+  
+  /* ====== Layout ====== */
+  .container{ max-width:1100px; margin:1rem auto; padding:0 1rem }
+  .nav{ display:flex; justify-content:space-between; align-items:center;
+    padding:.75rem 1rem; border-bottom:1px solid var(--border); background:var(--panel);
+    position:sticky; top:0; z-index:30 }
+  .nav-left{ display:flex; align-items:center; gap:.8rem }
+  .nav-right{ display:flex; align-items:center; gap:.75rem }
+  .brand{ font-weight:800; letter-spacing:.3px; color:var(--accent) }
+  .back-link{ color:var(--muted); padding:.25rem .5rem; border-radius:6px; border:1px solid transparent }
+  .back-link:hover{ border-color:var(--border); background:#0b1322 }
+  
+  /* ====== Buttons ====== */
+  .btn{ cursor:pointer; border:none; border-radius:8px; padding:.55rem .9rem; font-weight:600 }
+  .btn-primary{ background:var(--accent); color:#001018 }
+  .btn-ghost{ background:transparent; color:var(--fg); border:1px solid var(--border) }
+  .btn-warn{ background:var(--warn); color:#1b1400 }
+  .btn-outline{ background:transparent; border:1px solid var(--border); color:var(--fg) }
+  .btn:disabled{ opacity:.5; cursor:not-allowed }
+  
+  /* ====== Cards / Panels ====== */
+  .card{ background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:1rem; margin:1rem 0 }
+  .card-title{ font-size:1.1rem; font-weight:800; margin-bottom:.5rem }
+  .toolbar{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.6rem 0 }
+  
+  /* ====== Tables ====== */
+  .table{ width:100%; border-collapse:collapse }
+  .table th,.table td{ border-bottom:1px solid var(--border); padding:.6rem; text-align:left }
+  .table th{ color:var(--muted); font-weight:700 }
+  .table tr:hover td{ background:#0c1424 }
+  body[data-theme="light"] .table tr:hover td{ background:#eef3fb }
+  
+  /* ====== Form ====== */
+  .form label{ display:block; margin:.6rem 0 .2rem }
+  .form input,.form select,.form textarea{
+    width:100%; padding:.6rem; border-radius:8px; border:1px solid var(--border);
+    background:#0a1322; color:var(--fg)
+  }
+  body[data-theme="light"] .form input,
+  body[data-theme="light"] .form select,
+  body[data-theme="light"] .form textarea{ background:#f7f9fc }
+  
+  /* ====== Gamified Bits ====== */
+  .badge{ display:inline-block; padding:.2rem .6rem; border-radius:999px; font-size:.8rem; border:1px solid var(--border) }
+  .badge.scheduled{ background:#132139 }
+  .badge.started{ background:#183a7a }
+  .badge.completed{ background:#123c2a; color:#93f5c4 }
+  .badge.washed_out{ background:#273046; color:#cfd6e6 }
+  body[data-theme="light"] .badge.scheduled{ background:#e9f0fb }
+  body[data-theme="light"] .badge.started{ background:#dce8ff }
+  body[data-theme="light"] .badge.completed{ background:#eaf8f1; color:#0f5132 }
+  body[data-theme="light"] .badge.washed_out{ background:#eef1f6 }
+  
+  .chips{ display:flex; gap:.4rem; flex-wrap:wrap }
+  .chip{ display:inline-flex; align-items:center; gap:.35rem; padding:.3rem .55rem; border-radius:999px;
+    background:#0b1322; border:1px solid var(--border); font-size:.85rem }
+  .dot{ width:.5rem; height:.5rem; border-radius:999px; display:inline-block }
+  .dot-ok{ background:var(--ok)} .dot-bad{ background:var(--bad)} .dot-warn{ background:var(--warn)} .dot-info{ background:var(--accent) }
+  
+  /* ====== Responsive ====== */
+  @media (max-width:760px){
+    .nav-right{ gap:.5rem }
+    .table{ font-size:.95rem }
+  }
+  
+/* --------- Add/Adjust these rules in your CSS --------- */
+
+/* Make links obviously clickable everywhere */
+a { cursor: pointer; }
+.nav-right a .nav-link,
+.nav a,
+.table a { cursor: pointer; }
+
+/* Light theme fixes for chips/badges contrast */
+body[data-theme="light"] .chip {
+  background: #fff;          /* was dark in light mode; fix */
+  border: 1px solid var(--border);
+  color: var(--fg);
+}
+body[data-theme="light"] .card { background:#fff; }
+body[data-theme="light"] .back-link:hover { background:#eef3fb; }
+
+/* Table hover in light mode (already present but ensure visibility) */
+body[data-theme="light"] .table tr:hover td { background:#eef3fb; }
+
+/* Optional: make "Open", "View Details" etc. look like links */
+.nav-link { padding:.25rem .5rem; border-radius:6px; border:1px solid transparent; }
+.nav-link:hover { border-color:var(--border); background:rgba(0,0,0,.05); }
+body[data-theme="light"] .nav-link:hover { background:#eef3fb; }
+
+
+/* Admin-as-player declaration dots */
+.status-dot {
+  display:inline-block;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  vertical-align:middle;
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.06);
+}
+.status-green { background:#16a34a; } /* green */
+.status-red   { background:#dc2626; } /* red   */
+
+.card {
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform .1s ease, box-shadow .1s ease;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* ====== Travel Cards Grid Layout ====== */
+.travel-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.travel-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+
+.travel-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.travel-card h3 {
+  font-size: 1.2rem;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.travel-meta {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 0.5rem;
+}
+
+.travel-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.8rem;
+}

@@ -1,0 +1,24 @@
+
+<%- include('../partials/head', {title}) %>
+<h1>Series Members: <%= series.name %></h1>
+<button type="button" class="btn btn-link" onclick="history.back()">← Back</button>
+
+<h3>Add Member</h3>
+<form method="post" action="/admin/series/<%= series.id %>/members/add" class="form">
+  <label>User
+    <select name="user_id">
+      <% users.forEach(u => { %>
+        <option value="<%= u.id %>"><%= u.display_name %> (@<%= u.username %>)</option>
+      <% }) %>
+    </select>
+  </label>
+  <button class="btn">Add</button>
+</form>
+
+<h3>Current Members</h3>
+<ul>
+  <% members.forEach(m => { %>
+    <li><%= m.display_name %> (@<%= m.username %>)</li>
+  <% }) %>
+</ul>
+<%- include('../partials/foot') %>

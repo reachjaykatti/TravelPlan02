@@ -1,0 +1,11 @@
+
+<%- include('../partials/head', {title}) %>
+<h1>My Series</h1>
+<ul>
+  <% series.forEach(s => { %>
+    <li>
+      <a href="/series/<%= s.id %>"><%= s.name %></a> - Starts: <%= s.start_date_utc %>
+    </li>
+  <% }) %>
+</ul>
+<%- include('../partials/foot') %>

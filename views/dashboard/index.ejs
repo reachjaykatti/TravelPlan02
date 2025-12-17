@@ -1,0 +1,104 @@
+<%- include('../partials/head', { title: labels.appTitle }) %>
+
+<h1><%= labels.appTitle %></h1>
+
+<div class="kpi">
+  <div class="tile">
+    <div class="title">Total Points</div>
+    <div class="value"><%= totalPoints.toFixed ? totalPoints.toFixed(2) : totalPoints %></div>
+  </div>
+  <div class="tile">
+    <div class="title">Travels Planned</div>
+    <div class="value"><%= seriesStats.length %></div>
+  </div>
+  <div class="tile">
+    <div class="title">Total Planners</div>
+    <div class="value">
+      <%
+        const totalWins = seriesStats.reduce((s,x)=>s+(x.wins||0),0);
+        const totalPlayed = seriesStats.reduce((s,x)=>s+(x.completed||0),0);
+      %>
+      <%= totalWins %>
+    </div>
+  </div>
+  <div class="tile">
+    <div class="title">Planner % (All Travels)</div>
+    <div class="value"><%= totalPlayed ? ((totalWins/totalPlayed)*100).toFixed(1) : '0.0' %>%</div>
+  </div>
+</div>
+
+<h2>Streaks</h2>
+<div class="card">
+  <div class="chips">
+    <div class="chip"><span class="dot dot-info"></span> Current: <strong><%= streaks.currentStreak %></strong></div>
+    <div class="chip"><span class="dot dot-ok"></span> Longest Travel Planned: <strong><%= streaks.longestWin %></strong></div>
+    <div class="chip"><span class="dot dot-bad"></span> Longest Not Interested: <strong><%= streaks.longestLoss %></strong></div>
+  </div>
+</div>
+
+<h2>My Travel Stats</h2>
+<div class="card">
+  <table class="table">
+    <tr>
+      <th>Travel</th><th>Planned</th><th>Planners</th><th>Not Interested</th><th>Planner %</th>
+    </tr>
+    <% seriesStats.forEach(s => { %>
+      <tr>
+        <td><%= s.name %></td>
+        <td><%= s.completed %></td>
+        <td><%= s.wins %></td>
+        <td><%= s.losses %></td>
+        <td><%= s.completed ? ((s.wins/s.completed)*100).toFixed(1) : '0.0' %>%</td>
+      </tr>
+    <% }) %>
+  </table>
+</div>
+
+<h2>
+  Top Planners 
+  <%= selectedSeriesId ? `(Travel: ${selectedSeriesName || selectedSeriesId})` : '(All Travels)' %>
+</h2>
+
+<div class="card">
+  <form method="GET" action="/dashboard" class="inline-form" style="margin-bottom:.75rem">
+    <label for="seriesId"><strong>Filter by Travel:</strong></label>
+    <select name="seriesId" id="seriesId" onchange="this.form.submit()">
+      <option value="">All Travels</option>
+      <% seriesStats.forEach(s => { %>
+        <option value="<%= s.series_id %>" <%= (selectedSeriesId == s.series_id) ? 'selected' : '' %>>
+          <%= s.name %>
+        </option>
+      <% }) %>
+    </select>
+  </form>
+
+  <% if (seriesUnsupported) { %>
+    <div class="chips" style="margin-bottom:.5rem">
+      <div class="chip"><span class="dot dot-info"></span>
+        Travel filtering is not supported by the current data schema; showing global totals.
+      </div>
+    </div>
+  <% } else { %>
+    <div class="chips" style="margin-bottom:.5rem">
+      <div class="chip"><span class="dot dot-ok"></span> Top 3 planners are highlighted</div>
+      <div class="chip"><span class="dot dot-info"></span>
+        Points are <%= selectedSeriesId ? 'for the selected travel only' : 'cumulative across all travels' %>
+      </div>
+    </div>
+  <% } %>
+
+  <table class="table">
+    <tr><th>#</th><th>Planner</th><th>Badge</th><th>Points</th></tr>
+    <% leaderboard.forEach((l, idx) => { 
+         const medal = idx===0 ? '🥇' : idx===1 ? '🥈' : idx===2 ? '🥉' : '—'; %>
+      <tr>
+        <td><%= idx+1 %></td>
+        <td><%= l.display_name %></td>
+        <td><%= medal %></td>
+        <td><%= l.points.toFixed ? l.points.toFixed(2) : l.points %></td>
+      </tr>
+    <% }) %>
+  </table>
+</div>
+
+<%- include('../partials/foot') %>

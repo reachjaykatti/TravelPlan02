@@ -1,0 +1,122 @@
+<%- include('../partials/head', { title: labels.appTitle }) %>
+
+<h1><%= match.name %></h1>
+<a class="btn btn-link js-back"
+   href="<%= prevUrl || ('/series/' + series.id + '/matches') %>"
+   data-fallback="/series/<%= series.id %>/matches">
+   ← Back to <%= labels.matches %>
+</a>
+
+<div class="card">
+  <div><strong>Travel Group:</strong> <%= series.name %></div>
+  <div><strong>Destinations:</strong> <%= match.team_a %> <%= labels.vs %> <%= match.team_b %></div>
+  <div><strong>Start (IST):</strong> <%= match.startIstStr %></div>
+  <div><strong>Travel Points:</strong> <%= match.entry_points %></div>
+  <div><strong>Status:</strong> <%= match.status %></div>
+</div>
+
+<% if (match.status === 'completed' && declaredNames) { %>
+  <!-- ✅ Final travellers only after declaration -->
+  <h2>Final Travellers</h2>
+
+  <div class="chip" style="margin-bottom: 1rem;">
+    ✅ Travel planned to <strong><%= match.winner === 'A' ? match.team_a : match.team_b %></strong>
+  </div>
+
+  <div class="card">
+    <h3>Planners</h3>
+    <ul>
+      <% if (declaredNames.winners && declaredNames.winners.length) { %>
+        <% declaredNames.winners.forEach(name => { %>
+          <li><%= name %></li>
+        <% }) %>
+      <% } else { %>
+        <li class="text-muted">No planners.</li>
+      <% } %>
+    </ul>
+
+    <h3>Not Interested</h3>
+    <ul>
+      <% if (declaredNames.losers && declaredNames.losers.length) { %>
+        <% declaredNames.losers.forEach(name => { %>
+          <li><%= name %></li>
+        <% }) %>
+      <% } else { %>
+        <li class="text-muted">No one skipped.</li>
+      <% } %>
+    </ul>
+  </div>
+
+<% } else { %>
+  <!-- ✅ Before cutoff or declaration -->
+  <h2>Travellers</h2>
+  <div class="grid" style="grid-template-columns:1fr 1fr; gap:1rem;">
+    <div class="card">
+      <h3><%= match.team_a %> — Travellers</h3>
+      <ul>
+        <% if (probableNames && probableNames.A && probableNames.A.length) { %>
+          <% probableNames.A.forEach(name => { %><li><%= name %></li><% }) %>
+        <% } else { %>
+          <li class="text-muted">No plans yet.</li>
+        <% } %>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3><%= match.team_b %> — Travellers</h3>
+      <ul>
+        <% if (probableNames && probableNames.B && probableNames.B.length) { %>
+          <% probableNames.B.forEach(name => { %><li><%= name %></li><% }) %>
+        <% } else { %>
+          <li class="text-muted">No plans yet.</li>
+        <% } %>
+      </ul>
+    </div>
+  </div>
+<% } %>
+
+<% if (showAll && probable && match.status !== 'completed') { %>
+  <!-- ✅ Probable planners appear only after cutoff and before declaration -->
+  <h2><%= labels.probableWinnings %> (after cutoff)</h2>
+  <div class="grid" style="grid-template-columns:1fr 1fr; gap:1rem;">
+    <div class="card">
+      <h3><%= (labels && labels.ifwins)
+        ? labels.ifwins.replace('{team}', match.team_a)
+        : ('If ' + match.team_a + ' planned') %></h3>
+      <div><%= labels.winners %>: <strong><%= probable.A.winners %></strong></div>
+      <div><%= labels.losers %>: <strong><%= probable.A.losers %></strong></div>
+      <div>Total Pot: <strong><%= probable.A.totalPot %></strong></div>
+      <div>Per <%= labels.winner %>: 
+        <strong><%= probable.A.perWinner.toFixed ? probable.A.perWinner.toFixed(2) : probable.A.perWinner %></strong>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3><%= (labels && labels.ifwins)
+        ? labels.ifwins.replace('{team}', match.team_b)
+        : ('If ' + match.team_b + ' planned') %></h3>
+      <div><%= labels.winners %>: <strong><%= probable.B.winners %></strong></div>
+      <div><%= labels.losers %>: <strong><%= probable.B.losers %></strong></div>
+      <div>Total Pot: <strong><%= probable.B.totalPot %></strong></div>
+      <div>Per <%= labels.winner %>: 
+        <strong><%= probable.B.perWinner.toFixed ? probable.B.perWinner.toFixed(2) : probable.B.perWinner %></strong>
+      </div>
+    </div>
+  </div>
+
+<% } else if (!showAll) { %>
+  <!-- ✅ Before cutoff -->
+  <div class="chip">
+    <span class="dot dot-info"></span>
+    Probable planners will be shown after cutoff time.
+  </div>
+<% } %>
+
+<% if (myMatchPoints !== null) { %>
+  <h2>My Points (Final)</h2>
+  <div class="card">
+    <strong><%= myMatchPoints.toFixed ? myMatchPoints.toFixed(2) : myMatchPoints %></strong>
+  </div>
+<% } %>
+
+<%- include('../partials/foot') %>

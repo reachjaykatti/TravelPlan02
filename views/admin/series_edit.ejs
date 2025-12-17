@@ -1,0 +1,15 @@
+
+<%- include('../partials/head', {title}) %>
+<h1>Edit Series: <%= series.name %></h1>
+<% if (typeof error !== 'undefined') { %>
+  <div class="alert alert-error"><%= error %></div>
+<% } %>
+<button type="button" class="btn btn-link" onclick="history.back()">← Back</button>
+<form method="post" action="/admin/series/<%= series.id %>/edit" class="form">
+  <label>Name <input name="name" value="<%= series.name %>" required /></label>
+  <label>Description <textarea name="description"><%= series.description || '' %></textarea></label>
+  <label>Start Date (UTC) <input name="start_date_utc" value="<%= series.start_date_utc %>" required /></label>
+  <label>End Date (UTC) <input name="end_date_utc" value="<%= series.end_date_utc || '' %>" /></label>
+  <button class="btn">Save</button>
+</form>
+<%- include('../partials/foot') %>

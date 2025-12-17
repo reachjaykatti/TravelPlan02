@@ -1,0 +1,38 @@
+<%- include('../partials/head', { title: labels.matches }) %>
+
+<h1>Manage <%= labels.matches %> — <%= series.name %></h1>
+<a class="btn btn-link js-back" data-fallback="/admin">← Back</a>
+
+<div class="grid" style="margin: 1rem 0;">
+  <div>
+    <a class="btn" href="/admin/series/<%= series.id %>/matches/new">+ New <%= labels.match %></a>
+    <a class="btn" href="/admin/series/<%= series.id %>/matches/bulk">Bulk Import</a>
+  </div>
+</div>
+
+<!-- === Travel Cards Grid Layout === -->
+<div class="travel-grid">
+  <% matches.forEach(function(m){ %>
+    <div class="travel-card">
+      <div class="travel-card-header">
+        <span class="status-dot <%= m.adminDeclared ? 'status-green' : 'status-red' %>"
+              title="<%= m.adminDeclared ? 'Admin has planned travel' : 'Admin has not planned travel' %>"></span>
+        <h3><%= m.name %></h3>
+      </div>
+
+      <div class="travel-meta"><strong>Destinations:</strong> <%= m.team_a %> <%= labels.vs %> <%= m.team_b %></div>
+      <div class="travel-meta"><strong>Start (IST):</strong> <%= m.startIstStr %></div>
+      <div class="travel-meta"><strong>Cutoff (IST):</strong> <%= m.cutoffIstStr %></div>
+      <div class="travel-meta"><strong>Time until cutoff:</strong> <%= m.timeLeftLabel %></div>
+      <div class="travel-meta"><strong>Entry:</strong> <%= m.entry_points %></div>
+      <div class="travel-meta"><strong>Status:</strong> <%= m.status %></div>
+
+      <div class="travel-actions">
+        <a class="btn" href="/admin/matches/<%= m.id %>/edit">Edit</a>
+        <a class="btn" href="/admin/matches/<%= m.id %>">Planner</a>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+<%- include('../partials/foot') %>

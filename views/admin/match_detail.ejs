@@ -1,0 +1,105 @@
+<%- include('../partials/head', { title: labels.appTitle }) %>
+
+<h1>Travel Management — <%= match.name %></h1>
+
+<a class="btn btn-link js-back"
+   href="<%= prevUrl || ('/admin/series/' + series.id + '/matches') %>"
+   data-fallback="/admin/series/<%= series.id %>/matches">
+   ← Back to <%= labels.matches %>
+</a>
+
+<div class="card" style="margin-top:.5rem;">
+  <div><strong>Travel Group:</strong> <%= series.name %></div>
+  <div><strong>Destinations:</strong> <%= match.team_a %> <%= labels.vs %> <%= match.team_b %></div>
+  <div><strong>Start (UTC):</strong> <%= match.start_time_utc %></div>
+  <div><strong>Entry Points:</strong> <%= match.entry_points %></div>
+  <div><strong>Status:</strong> <%= match.status %></div>
+</div>
+
+<% if (!isCutoffOver) { %>
+  <!-- Before cutoff -->
+  <h2><%= labels.probableWinnings %></h2>
+  <div class="grid" style="grid-template-columns:1fr 1fr; gap:1rem;">
+    <div class="card">
+      <h3><%= (labels.ifwins ? labels.ifwins.replace('{team}', match.team_a) : ('If ' + match.team_a + ' planned')) %></h3>
+      <div><%= labels.winners %>: <strong><%= aCount %></strong></div>
+      <div><%= labels.losers %>: <strong><%= bCount + missed %></strong></div>
+      <div>Total Pot: <strong><%= probable.A.totalPot %></strong></div>
+      <div>Per <%= labels.winner %>: <strong><%= probable.A.perPlanner.toFixed ? probable.A.perPlanner.toFixed(2) : probable.A.perPlanner %></strong></div>
+    </div>
+
+    <div class="card">
+      <h3><%= (labels.ifwins ? labels.ifwins.replace('{team}', match.team_b) : ('If ' + match.team_b + ' planned')) %></h3>
+      <div><%= labels.winners %>: <strong><%= bCount %></strong></div>
+      <div><%= labels.losers %>: <strong><%= aCount + missed %></strong></div>
+      <div>Total Pot: <strong><%= probable.B.totalPot %></strong></div>
+      <div>Per <%= labels.winner %>: <strong><%= probable.B.perPlanner.toFixed ? probable.B.perPlanner.toFixed(2) : probable.B.perPlanner %></strong></div>
+    </div>
+  </div>
+<% } else { %>
+  <!-- After cutoff -->
+  <h2>Probable Planners (after cutoff)</h2>
+  <div class="grid" style="grid-template-columns:1fr 1fr; gap:1rem;">
+    <div class="card">
+      <h3><%= (labels.ifwins ? labels.ifwins.replace('{team}', match.team_a) : ('If ' + match.team_a + ' planned')) %></h3>
+      <div>Planners: <strong><%= probable.A.winners %></strong></div>
+      <div>Not Interested: <strong><%= probable.A.losers %></strong></div>
+      <div>Total Pot: <strong><%= probable.A.totalPot %></strong></div>
+      <div>Per Planner: <strong><%= probable.A.perPlanner.toFixed(2) %></strong></div>
+    </div>
+
+    <div class="card">
+      <h3><%= (labels.ifwins ? labels.ifwins.replace('{team}', match.team_b) : ('If ' + match.team_b + ' planned')) %></h3>
+      <div>Planners: <strong><%= probable.B.winners %></strong></div>
+      <div>Not Interested: <strong><%= probable.B.losers %></strong></div>
+      <div>Total Pot: <strong><%= probable.B.totalPot %></strong></div>
+      <div>Per Planner: <strong><%= probable.B.perPlanner.toFixed(2) %></strong></div>
+    </div>
+  </div>
+<% } %>
+
+<div class="chip" style="margin-top:1rem;">
+  <span class="dot dot-info"></span>
+  Travellers in series: <strong><%= membersCountVal %></strong>
+</div>
+
+<h2>Actions</h2>
+<div class="grid" style="gap:.5rem">
+  <form method="POST" action="/admin/matches/<%= match.id %>/declare"
+        class="js-confirm-double"
+        data-confirm1="Confirm travel plan to <%= match.team_a %>?"
+        data-confirm2="Finalize points and mark as planned?">
+    <input type="hidden" name="winner" value="A" />
+    <button type="submit" class="btn btn-primary">
+      <%= labels.travelPlannedTo.replace('{team}', match.team_a) %>
+    </button>
+  </form>
+
+  <form method="POST" action="/admin/matches/<%= match.id %>/declare"
+        class="js-confirm-double"
+        data-confirm1="Confirm travel plan to <%= match.team_b %>?"
+        data-confirm2="Finalize points and mark as planned?">
+    <input type="hidden" name="winner" value="B" />
+    <button type="submit" class="btn btn-primary">
+      <%= labels.travelPlannedTo.replace('{team}', match.team_b) %>
+    </button>
+  </form>
+
+  <form method="POST" action="/admin/matches/<%= match.id %>/declare"
+        class="js-confirm-double"
+        data-confirm1="Cancel this travel?"
+        data-confirm2="No points will be assigned. Proceed?">
+    <input type="hidden" name="washed_out" value="1" />
+    <button type="submit" class="btn btn-warning">Cancel Travel</button>
+  </form>
+
+  <form method="POST" action="/admin/matches/<%= match.id %>/reset-ledger"
+        class="js-confirm-double"
+        data-confirm1="Reset points for this travel?"
+        data-confirm2="This will delete all entries and reopen planning. Proceed?">
+    <button type="submit" class="btn btn-danger">Reset Travel Points</button>
+  </form>
+</div>
+
+<%- include('../partials/foot') %>
+

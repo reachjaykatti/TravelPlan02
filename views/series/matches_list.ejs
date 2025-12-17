@@ -1,0 +1,51 @@
+<%- include('../partials/head', { title: labels.matches }) %>
+
+<h1><%= labels.matches %> — <%= series.name %></h1>
+<a class="btn btn-link js-back" data-fallback="/series">← Back</a>
+
+<!-- ===== TRAVEL GRID ===== -->
+<div class="travel-grid">
+  <% matches.forEach(function(m) { %>
+    <div class="travel-card">
+      <div class="travel-card-header">
+        <span class="status-dot <%= m.admin_declared ? 'status-green' : 'status-red' %>"
+              title="<%= m.admin_declared ? 'Travel planned by admin' : 'Travel not yet planned' %>"></span>
+        <h3><%= m.name %></h3>
+      </div>
+
+      <div class="travel-meta"><strong>Destinations:</strong> <%= m.team_a %> <%= labels.vs %> <%= m.team_b %></div>
+      <div class="travel-meta"><strong>Start (IST):</strong> <%= m.start_time_ist %></div>
+      <div class="travel-meta"><strong>Entry:</strong> <%= m.entry_points %></div>
+      <div class="travel-meta"><strong>Status:</strong> <%= m.status %></div>
+      <div class="travel-meta"><strong>Time Left:</strong> <%= m.time_left %></div>
+
+      <div class="travel-actions">
+        <a class="btn" href="/series/<%= series.id %>/matches/<%= m.id %>">Details</a>
+
+        <% if (m.user_has_predicted) { %>
+          <span class="chip"><span class="dot dot-ok"></span>
+            Planned: <strong><%= m.user_predicted_name %></strong>
+          </span>
+        <% } else if (!m.locked && m.status === 'scheduled') { %>
+          <form class="inline js-confirm-double" method="post" action="/series/<%= series.id %>/matches/<%= m.id %>/predict"
+                data-confirm1="Confirm your travel plan: <%= m.team_a %>?"
+                data-confirm2="Final confirmation: <%= m.team_a %>?">
+            <input type="hidden" name="team" value="A" />
+            <button class="btn" type="submit"><%= labels.declare %> <%= m.team_a %></button>
+          </form>
+
+          <form class="inline js-confirm-double" method="post" action="/series/<%= series.id %>/matches/<%= m.id %>/predict"
+                data-confirm1="Confirm your travel plan: <%= m.team_b %>?"
+                data-confirm2="Final confirmation: <%= m.team_b %>?">
+            <input type="hidden" name="team" value="B" />
+            <button class="btn" type="submit"><%= labels.declare %> <%= m.team_b %></button>
+          </form>
+        <% } else { %>
+          <span class="text-muted">Travel planning closed</span>
+        <% } %>
+      </div>
+    </div>
+  <% }) %>
+</div>
+
+<%- include('../partials/foot') %>

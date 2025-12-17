@@ -1,0 +1,14 @@
+{
+  "appTitle": "TRAVEL PLAN",
+  "declare": "Let's Go",
+  "match": "Travel",
+  "matches": "Travels",
+  "winner": "Planner",
+  "winners": "Planners",
+  "loser": "Not Interested",
+  "losers": "Not Interested",
+  "probableWinnings": "Probable Planners",
+  "ifWins": "if {team} planned",
+  "travelPlannedTo": "Travel Planned to {team}",
+  "vs": "OR"
+}

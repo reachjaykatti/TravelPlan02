@@ -1,0 +1,50 @@
+<%- include('../partials/head', { title: 'Admin' }) %>
+
+<h1>Admin</h1>
+
+<div class="toolbar" style="margin-bottom: 1rem;">
+  <a class="btn" href="/admin/series/new">+ New Series</a>
+  <a class="btn" href="/admin/users/new">+ Add User</a>
+</div>
+
+<h2>Series</h2>
+
+<table class="table">
+  <tr>
+    <th>Name</th>
+    <th>Dates (IST)</th>
+    <th>Members</th>
+    <th>Lock</th>
+    <th>Manage</th>
+    <th>Edit</th>
+    <th>Delete</th>
+  </tr>
+
+  <% series.forEach(s => { %>
+    <tr>
+      <td><%= s.name %></td>
+      <td><%= s.start_date_ist %> → <%= s.end_date_ist %></td>
+      <td><a href="/admin/series/<%= s.id %>/members">Manage</a></td>
+      <td>
+        <% if (s.locked) { %>
+          <form method="POST" action="/admin/series/<%= s.id %>/unlock" style="display:inline;">
+            <button class="btn btn-warning" type="submit">Unlock</button>
+          </form>
+        <% } else { %>
+          <form method="POST" action="/admin/series/<%= s.id %>/lock" style="display:inline;">
+            <button class="btn btn-warning" type="submit">Lock</button>
+          </form>
+        <% } %>
+      </td>
+      <td><a href="/admin/series/<%= s.id %>/matches"><strong>Manage Travels</strong></a></td>
+      <td><a href="/admin/series/<%= s.id %>/edit">Edit</a></td>
+      <td>
+        <form method="POST" action="/admin/series/<%= s.id %>/delete" onsubmit="return confirm('Delete this series?')">
+          <button class="btn btn-danger" type="submit">Delete</button>
+        </form>
+      </td>
+    </tr>
+  <% }) %>
+</table>
+
+<%- include('../partials/foot') %>
