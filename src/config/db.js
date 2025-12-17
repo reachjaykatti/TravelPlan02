@@ -58,6 +58,9 @@ const isRender = process.env.RENDER === 'true';
 const localDefault = path.resolve(__dirname, '../../data/db.sqlite');
 const renderDefault = path.resolve('/tmp', 'db.sqlite');
 const dbPath = '/tmp/db.sqlite';
+console.log('[DB] using file:', dbPath);
+console.log('[DB] cwd:', process.cwd());
+console.log('[DB] using file:', dbPath);
 
 // Ensure the folder exists
 fs.mkdirSync(path.dirname(dbPath), { recursive: true });
